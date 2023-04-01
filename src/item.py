@@ -1,52 +1,78 @@
+import csv
+
+
 class Item:
-    """
-    Класс для представления товара в магазине.
-    """
-    pay_rate = 0.85
+    discount_coefficient = 0.85
     all = []
 
-    def __init__(self, name: str, price: float, quantity: int) -> None:
-        """
-        Создание экземпляра класса item.
-
-        :param name: Название товара.
-        :param price: Цена за единицу товара.
-        :param quantity: Количество товара в магазине.
-        """
-        self.name = name
+    def __init__(self, name="", price=0.0, quantity=0):
+        self.name_length(name)
+        self.__name = name
         self.price = price
         self.quantity = quantity
+        self.all.append(self)
 
-        Item.all.append(self)
+    @classmethod
+    def name_length(cls, name):
+        if len(str(name)) > 10:
+            raise Exception("Длина наименования товара превышает 10 символов")
+        else:
+            cls.__name = name
 
-    def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
+    @property
+    def name(self):
+        return self.__name
 
-        :return: Общая стоимость товара.
-        """
+    @name.setter
+    def name(self, name):
+        self.name_length(self.name)
+        self.__name = name
+
+    def calculate_total_price(self):
+        """Подсчитывает стоимость всего конкретного товара и возвращает его"""
         return self.price * self.quantity
 
-    def apply_discount(self) -> None:
-        """
-        Применяет установленную скидку для конкретного товара.
-        """
-        self.price = self.price * Item.pay_rate
+    def apply_discount(self):
+        """Подсчитывает стоимость с учетом коэффициента"""
+        self.price = self.price * Item.discount_coefficient
         return self.price
 
-item1 = Item("Смартфон", 1000, 20)
-item2 = Item("Ноутбук", 20000, 5)
+    @classmethod
+    def instantiate_from_csv(cls):
+        cls.all = []
+        """Загружает данные из csv файла и преобразует их в список словарей"""
+        with open('items.csv', 'r', encoding='UTF-8', newline='') as f:
+            reader = csv.DictReader(f)
+            for line in reader:
+                cls.all.append(line)
+            return cls.all
 
-print(item1.calculate_total_price())
-print(item2.calculate_total_price())
-# 200000 # общая стоимость смартфонов
-# 100000 # общая стоимость ноутбуков
+    @staticmethod
+    def is_whole(digit):
+        """Проверяет целое ли число. Допустимо с 0 после точки (напр.10.0)"""
+        is_int = float(digit).is_integer()
+        return is_int
 
-Item.pay_rate = 0.8  # устанавливаем новый уровень цен
-item1.apply_discount()
-print(item1.price)
-print(item2.price)
-# 8000.0 # к цене смартфона применена скидка
-# 20000 # к цене ноутбука скидка не была применена
 
-print(Item.all)
+item = Item('Телефон', 10000, 5)
+item.name = 'Смартфон'
+print(item.name)
+# Смартфон
+
+item.name = 'МегаСмартфон'
+print(item.name)
+# Exception: Длина наименования товара превышает 10 символов.
+
+
+Item.instantiate_from_csv()  # создание объектов из данных файла
+print(len(Item.all))  # в файле 5 записей с данными по товарам
+# 5
+item1 = Item.all[0]
+print(item1["name"])
+# Смартфон
+print(Item.is_whole(5))
+print(Item.is_whole(5.0))
+print(Item.is_whole(5.5))
+# True
+# True
+# False
