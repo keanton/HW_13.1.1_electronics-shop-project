@@ -11,5 +11,6 @@ def item1():
 def test_calculate_total_price(item1):
     assert item1.calculate_total_price() == 100
 
+
 def test_apply_discount(item1):
     assert item1.apply_discount() == 8
