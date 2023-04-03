@@ -14,3 +14,6 @@ def test_calculate_total_price(item1):
 
 def test_apply_discount(item1):
     assert item1.apply_discount() == 8
+
+def test_instantiate_from_csv():
+   Item.instantiate_from_csv('./src/items.csv')

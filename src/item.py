@@ -41,7 +41,7 @@ class Item:
     def instantiate_from_csv(cls):
         cls.all = []
         """Загружает данные из csv файла и преобразует их в список словарей"""
-        with open("D:\Python\SkyPro\HomeTask\HW_13.1.1_electronics-shop-project1\src\items.csv", 'r', encoding='windows-1251', newline='') as f:
+        with open('../src/items.csv', 'r', encoding='windows-1251', newline='') as f:
             reader = csv.DictReader(f)
             for line in reader:
                 cls.all.append(line)
