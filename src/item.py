@@ -53,26 +53,33 @@ class Item:
         is_int = float(digit).is_integer()
         return is_int
 
+    def __repr__(self) -> str:
+        return f"Имя: {self.name}, цена: {self.price}"
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+
 
 item = Item('Телефон', 10000, 5)
-item.name = 'Смартфон'
-print(item.name)
+
+#item.name = 'Смартфон'
+print(item)
 # Смартфон
 
-item.name = 'МегаСмартфон'
-print(item.name)
+# item.name = 'МегаСмартфон'
+# print(item.name)
 # Exception: Длина наименования товара превышает 10 символов.
 
 
 Item.instantiate_from_csv()  # создание объектов из данных файла
 print(len(Item.all))  # в файле 5 записей с данными по товарам
 # 5
-item1 = Item.all[0]
-print(item1["name"])
+# item1 = Item.all[0]
+# print(item1["name"])
 # Смартфон
-print(Item.is_whole(5))
-print(Item.is_whole(5.0))
-print(Item.is_whole(5.5))
+# print(Item.is_whole(5))
+# print(Item.is_whole(5.0))
+# print(Item.is_whole(5.5))
 # True
 # True
 # False

@@ -17,3 +17,13 @@ def test_apply_discount(item1):
 
 def test_instantiate_from_csv():
    Item.instantiate_from_csv('./src/items.csv')
+
+def test__str__(item1):
+    assert str(item1) == "test"
+
+def test_name(item1):
+    assert item1.name == "test"
+
+
+def test__repr__(item1):
+    assert repr(item1) == "Имя: test, цена: 10"
